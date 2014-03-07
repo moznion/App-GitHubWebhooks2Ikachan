@@ -53,10 +53,16 @@ sub to_app {
                 my $name = $issue->{user}->{login};
                 my $url  = $issue->{html_url};
 
-                # TODO switch by action
-                # $action = $dat->{action};
-
-                send_to_ikachan($channel, $msg, $name, $url, '');
+                my $subscribe_actions = $req->param('issues');
+                if (!$subscribe_actions) {
+                    send_to_ikachan($channel, $msg, $name, $url, '');
+                }
+                else {
+                    my $action = $dat->{action};
+                    if (grep { $_ eq $action } split(/,/, $subscribe_actions)) {
+                        send_to_ikachan($channel, $msg, $name, $url, '');
+                    }
+                }
             }
             elsif ($event eq 'pull_request' && $subscribe_all || $subscribed_events->{$event}) {
                 my $pull_request = $dat->{pull_request};
@@ -65,10 +71,16 @@ sub to_app {
                 my $name = $pull_request->{user}->{login};
                 my $url  = $pull_request->{html_url};
 
-                # TODO switch by action
-                # $action = $dat->{action};
-
-                send_to_ikachan($channel, $msg, $name, $url, '');
+                my $subscribe_actions = $req->param('pull_request');
+                if (!$subscribe_actions) {
+                    send_to_ikachan($channel, $msg, $name, $url, '');
+                }
+                else {
+                    my $action = $dat->{action};
+                    if (grep { $_ eq $action } split(/,/, $subscribe_actions)) {
+                        send_to_ikachan($channel, $msg, $name, $url, '');
+                    }
+                }
             }
             elsif ($event eq 'issue_comment' && $subscribe_all || $subscribed_events->{$event}) {
                 my $comment = $dat->{comment};
