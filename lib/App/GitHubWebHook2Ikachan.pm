@@ -19,15 +19,15 @@ use Class::Accessor::Lite(
 our $VERSION = "0.01";
 
 sub new {
-    my ($class) = @_;
+    my ($class, $args) = @_;
 
     my $ua = LWP::UserAgent->new(
         agent => "App::GitHubWebHook2Ikachan (Perl)",
-    )
+    );
 
     bless {
         ua          => $ua,
-        ikachan_url => '',
+        ikachan_url => $args->{ikachan_url},
     }, $class;
 }
 
@@ -101,10 +101,10 @@ sub send_to_ikachan {
 }
 
 sub parse_options {
-    my ($self, @argv) = @_;
+    my ($class, @argv) = @_;
 
     my $p = Getopt::Long::Parser->new(
-        config => [qw(posix_default no_ignore_case auto_help pass_through)]];
+        config => [qw(posix_default no_ignore_case auto_help pass_through)],
     );
 
     $p->getoptionsfromarray(\@argv, \my %opt, qw/
@@ -112,18 +112,16 @@ sub parse_options {
     /) or pod2usage();
     $opt{ikachan_url} || pod2usage();
 
-    $self->ikachan_url($opt{ikachan_url});
+    return (\%opt, \@argv);
 }
 
 sub run {
-    my $class = shift;
+    my ($self, @argv) = @_;
 
-    my %args = @_ == 1 ? %{$_[0]} : @_;
-    # if (!$args{listen} && !$args{port} && !$ENV{SERVER_STARTER_PORT}) {
-    #     $args{port} = 4907;
-    # }
-    require Plack::Loader;
-    Plack::Loader->auto(%args)->run($class->to_app);
+    require Plack::Runner;
+    my $runner = Plack::Runner->new;
+    $runner->parse_options('--port=5555', @argv);
+    $runner->run($self->to_app);
 }
 
 1;
