@@ -32,8 +32,6 @@ sub to_app {
             my $dat = decode_json($payload);
             infof("Payload: %s", $payload);
 
-            my $branch = _extract_branch_name($dat);
-
             my $event = $req->header('X-GitHub-Event');
 
             if ($event eq 'issues') {
@@ -70,6 +68,8 @@ sub to_app {
                 send_to_ikachan($channel, $msg, $name, $url, '');
             }
             elsif ($event eq 'push') {
+                my $branch = _extract_branch_name($dat);
+
                 # for merge commit (squash it)
                 my $merge_commit;
                 my $head_commit = $dat->{head_commit};
@@ -80,7 +80,6 @@ sub to_app {
                     }
                 }
 
-                # commits
                 for my $commit (@{$merge_commit || $dat->{commits} || []}) {
                     my $name = $commit->{author}->{username}
                         || $commit->{author}->{name}
