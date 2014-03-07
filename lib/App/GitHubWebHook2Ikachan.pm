@@ -7,6 +7,7 @@ use JSON;
 use Log::Minimal;
 use LWP::UserAgent;
 use Plack::Builder;
+use Plack::Runner;
 use Plack::Request;
 use String::IRC;
 use Pod::Usage;
@@ -118,7 +119,6 @@ sub parse_options {
 sub run {
     my ($self, @argv) = @_;
 
-    require Plack::Runner;
     my $runner = Plack::Runner->new;
     $runner->parse_options('--port=5555', @argv);
     $runner->run($self->to_app);
