@@ -7,6 +7,7 @@ use Log::Minimal;
 use Plack::Builder;
 use Plack::Request;
 use String::IRC;
+use App::GitHubWebHook2Ikachan::Events;
 
 our $VERSION = "0.01";
 
@@ -21,117 +22,38 @@ sub to_app {
             my $channel = $req->path_info;
             $channel =~ s!\A/+!!;
             unless ($channel) {
-                die "Missing channerl name"; # TODO
+                die "Missing channel name";
             }
             infof("Post to %s", $channel);
 
             my $payload = $req->param('payload');
             unless ($payload) {
-                die "Payload is nothing"; # TODO
+                die "Payload is nothing";
             }
             my $dat = decode_json($payload);
             infof("Payload: %s", $payload);
 
-            my $subscribe_all     = 0;
-            my $subscribed_events = {};
-            my $subscribe = $req->param('subscribe');
-            if (!$subscribe) {
-                $subscribe_all = 1;
-            }
-            else {
-                for my $subscribed_event (split(/,/, $subscribe)) {
-                    $subscribed_events->{$subscribed_event} = 1;
+            my $event_name = $req->header('X-GitHub-Event');
+
+            my $event_dispatcher = App::GitHubWebHook2Ikachan::Events->new(
+                dat     => $dat,
+                req     => $req,
+                channel => $channel,
+            );
+
+            my $send_contents = $event_dispatcher->dispatch($event_name);
+            if ($send_contents && ref $send_contents eq 'ARRAY') {
+                if (ref $send_contents->[0] ne 'ARRAY') {
+                    $send_contents = [$send_contents];
                 }
-            }
-
-            my $event = $req->header('X-GitHub-Event');
-
-            if ($event eq 'issues' && $subscribe_all || $subscribed_events->{$event}) {
-                my $issue = $dat->{issue};
-
-                my $msg  = $issue->{body};
-                my $name = $issue->{user}->{login};
-                my $url  = $issue->{html_url};
-
-                my $subscribe_actions = $req->param('issues');
-                if (!$subscribe_actions) {
-                    send_to_ikachan($channel, $msg, $name, $url, '');
-                }
-                else {
-                    my $action = $dat->{action};
-                    if (grep { $_ eq $action } split(/,/, $subscribe_actions)) {
-                        send_to_ikachan($channel, $msg, $name, $url, '');
-                    }
-                }
-            }
-            elsif ($event eq 'pull_request' && $subscribe_all || $subscribed_events->{$event}) {
-                my $pull_request = $dat->{pull_request};
-
-                my $msg  = $pull_request->{body};
-                my $name = $pull_request->{user}->{login};
-                my $url  = $pull_request->{html_url};
-
-                my $subscribe_actions = $req->param('pull_request');
-                if (!$subscribe_actions) {
-                    send_to_ikachan($channel, $msg, $name, $url, '');
-                }
-                else {
-                    my $action = $dat->{action};
-                    if (grep { $_ eq $action } split(/,/, $subscribe_actions)) {
-                        send_to_ikachan($channel, $msg, $name, $url, '');
-                    }
-                }
-            }
-            elsif ($event eq 'issue_comment' && $subscribe_all || $subscribed_events->{$event}) {
-                my $comment = $dat->{comment};
-
-                my $msg  = $comment->{body};
-                my $name = $comment->{user}->{login};
-                my $url  = $comment->{html_url};
-
-                send_to_ikachan($channel, $msg, $name, $url, '');
-            }
-            elsif ($event eq 'push' && $subscribe_all || $subscribed_events->{$event}) {
-                my $branch = _extract_branch_name($dat);
-
-                # for merge commit (squash it)
-                my $merge_commit;
-                my $head_commit = $dat->{head_commit};
-                if ($head_commit) {
-                    my $head_commit_msg = $head_commit->{message};
-                    if ($head_commit_msg && $head_commit_msg =~ /\AMerge/) { # XXX
-                        $merge_commit = [$head_commit];
-                    }
-                }
-
-                for my $commit (@{$merge_commit || $dat->{commits} || []}) {
-                    my $name = $commit->{author}->{username}
-                        || $commit->{author}->{name}
-                        || $commit->{committer}->{username}
-                        || $commit->{committer}->{name};
-                    my $msg = $commit->{message};
-                    my $url = $commit->{url};
-
-                    send_to_ikachan($channel, $msg, $name, $url, $branch);
+                for my $send_content (@$send_contents) {
+                    send_to_ikachan(@$send_content);
                 }
             }
 
             return [200, ['Content-Type' => 'text/plain', 'Content-Length' => 2], ['OK']];
         };
     };
-}
-
-sub _extract_branch_name {
-    my ($dat) = @_;
-
-    # e.g.
-    #   ref: "refs/heads/__BRANCH_NAME__"
-    my $branch;
-    if (my $ref = $dat->{ref}) {
-        $branch = (split qr!/!, $ref)[-1];
-    }
-
-    return $branch ? $branch : '';
 }
 
 sub send_to_ikachan {
