@@ -122,15 +122,72 @@ __END__
 
 =head1 NAME
 
-App::GitHubWebHook2Ikachan - It's new $module
+App::GitHubWebHook2Ikachan - Server to notify GitHub Webhook to L<App::Ikachan>
 
 =head1 SYNOPSIS
 
-    use App::GitHubWebHook2Ikachan;
+    $ githubwebhook2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
 
 =head1 DESCRIPTION
 
-App::GitHubWebHook2Ikachan is ...
+App::GitHubWebHook2Ikachan is the server to notify GitHub Webhook to L<App::Ikachan>.
+
+Now, this application supports C<issues>, C<pull_request>, C<issue_comment>, and C<push> webhooks of GitHub.
+
+=head1 USAGE
+
+Please set up webhooks at GitHub (if you want to know details, please refer L<http://developer.github.com/v3/activity/events/types/>).
+
+Payload URL will be like so;
+
+    http://your-githubwebhook2ikachan-server.com/${path}?subscribe=issues,pull_request&issues=opened,closed&pull_request=opened
+
+This section describes the details.
+
+=over 4
+
+=item PATH INFO
+
+=over 8
+
+=item ${path}
+
+Destination of IRC channel to send message. This is essential.
+
+=back
+
+=item QUERY PARAMETERS
+
+=over 8
+
+=item subscribe
+
+Event names to subscribe. Specify by comma separated value.
+Now, this application supports C<issues>, C<pull_request>, C<issue_comment>, and C<push>.
+
+If you omit this parameter, it will subscribe the all of supported events.
+
+=item issues
+
+Action names to subscribe for C<issues> event. Specify by comma separated value.
+Now this application supports C<opened>, C<closed>, and C<reopend>.
+
+If you omit this parameter, it will subscribe the all of supported actions of C<issues>.
+
+=item pull_request
+
+Action names to subscribe for C<pull_request> event. Specify by comma separated value.
+Now this application supports C<opened>, C<closed>, C<reopend>, and C<synchronized>.
+
+If you omit this parameter, it will subscribe the all of supported actions of C<pull_request>.
+
+=back
+
+=back
+
+=head1 SEE ALSO
+
+L<http://developer.github.com/v3/activity/events/types/>.
 
 =head1 LICENSE
 
