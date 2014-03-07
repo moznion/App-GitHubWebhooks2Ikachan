@@ -2,16 +2,40 @@ package App::GitHubWebHook2Ikachan;
 use 5.008005;
 use strict;
 use warnings;
+use Getopt::Long;
 use JSON;
 use Log::Minimal;
+use LWP::UserAgent;
 use Plack::Builder;
 use Plack::Request;
 use String::IRC;
+use Pod::Usage;
 use App::GitHubWebHook2Ikachan::Events;
+use Class::Accessor::Lite(
+    new => '0',
+    rw  => [qw/ua ikachan_url/],
+);
 
 our $VERSION = "0.01";
 
+sub new {
+    my ($class) = @_;
+
+    my $ua = LWP::UserAgent->new(
+        agent => "App::GitHubWebHook2Ikachan (Perl)",
+    )
+
+    bless {
+        ua          => $ua,
+        ikachan_url => '',
+    }, $class;
+}
+
 sub to_app {
+    my ($self) = @_;
+
+    infof("ikachan url: %s", $self->ikachan_url);
+
     builder {
         enable 'AccessLog';
 
@@ -47,7 +71,7 @@ sub to_app {
                     $send_contents = [$send_contents];
                 }
                 for my $send_content (@$send_contents) {
-                    send_to_ikachan(@$send_content);
+                    $self->send_to_ikachan(@$send_content);
                 }
             }
 
@@ -57,7 +81,7 @@ sub to_app {
 }
 
 sub send_to_ikachan {
-    my ($channel, $msg, $name, $url, $branch) = @_;
+    my ($self, $channel, $msg, $name, $url, $branch) = @_;
 
     $msg =~ s/\r?\n.*//g;
 
@@ -74,6 +98,21 @@ sub send_to_ikachan {
 
     # TODO encode
     infof("POST %s, %s, %s, %s, %s", $channel, $msg, $name, $url, $branch || '-');
+}
+
+sub parse_options {
+    my ($self, @argv) = @_;
+
+    my $p = Getopt::Long::Parser->new(
+        config => [qw(posix_default no_ignore_case auto_help pass_through)]];
+    );
+
+    $p->getoptionsfromarray(\@argv, \my %opt, qw/
+        ikachan_url=s
+    /) or pod2usage();
+    $opt{ikachan_url} || pod2usage();
+
+    $self->ikachan_url($opt{ikachan_url});
 }
 
 sub run {
