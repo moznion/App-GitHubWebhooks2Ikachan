@@ -66,7 +66,7 @@ sub to_app {
             );
 
             my $send_texts = $event_dispatcher->dispatch($event_name);
-            if ($send_texts)
+            if ($send_texts) {
                 if (ref $send_texts ne 'ARRAY') {
                     $send_texts = [$send_texts];
                 }
@@ -83,13 +83,13 @@ sub to_app {
 sub send_to_ikachan {
     my ($self, $channel, $text) = @_;
 
-    my $res = $ua->post($self->ikachan_url, [
+    my $res = $self->ua->post($self->ikachan_url, [
         message => $text,
         channel => $channel,
     ]);
 
     $text = encode_utf8($text);
-    infof("POST %s", $text);
+    infof("POST %s, %s", $channel, $text);
 }
 
 sub parse_options {
