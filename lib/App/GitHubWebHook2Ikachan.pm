@@ -56,7 +56,7 @@ sub to_app {
                 die "Payload is nothing";
             }
             my $dat = decode_json($payload);
-            infof("Payload: %s", $payload);
+            # infof("Payload: %s", $payload);
 
             my $event_name = $req->header('X-GitHub-Event');
 
