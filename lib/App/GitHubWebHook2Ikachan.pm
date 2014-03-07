@@ -32,9 +32,21 @@ sub to_app {
             my $dat = decode_json($payload);
             infof("Payload: %s", $payload);
 
+            my $subscribe_all     = 0;
+            my $subscribed_events = {};
+            my $subscribe = $req->param('subscribe');
+            if (!$subscribe) {
+                $subscribe_all = 1;
+            }
+            else {
+                for my $subscribed_event (split(/,/, $subscribe)) {
+                    $subscribed_events->{$subscribed_event} = 1;
+                }
+            }
+
             my $event = $req->header('X-GitHub-Event');
 
-            if ($event eq 'issues') {
+            if ($event eq 'issues' && $subscribe_all || $subscribed_events->{$event}) {
                 my $issue = $dat->{issue};
 
                 my $msg  = $issue->{body};
@@ -46,7 +58,7 @@ sub to_app {
 
                 send_to_ikachan($channel, $msg, $name, $url, '');
             }
-            elsif ($event eq 'pull_request') {
+            elsif ($event eq 'pull_request' && $subscribe_all || $subscribed_events->{$event}) {
                 my $pull_request = $dat->{pull_request};
 
                 my $msg  = $pull_request->{body};
@@ -58,8 +70,8 @@ sub to_app {
 
                 send_to_ikachan($channel, $msg, $name, $url, '');
             }
-            elsif ($event eq 'issue_comment') {
-                my $comment = $dat->{issue_comment};
+            elsif ($event eq 'issue_comment' && $subscribe_all || $subscribed_events->{$event}) {
+                my $comment = $dat->{comment};
 
                 my $msg  = $comment->{body};
                 my $name = $comment->{user}->{login};
@@ -67,7 +79,7 @@ sub to_app {
 
                 send_to_ikachan($channel, $msg, $name, $url, '');
             }
-            elsif ($event eq 'push') {
+            elsif ($event eq 'push' && $subscribe_all || $subscribed_events->{$event}) {
                 my $branch = _extract_branch_name($dat);
 
                 # for merge commit (squash it)
