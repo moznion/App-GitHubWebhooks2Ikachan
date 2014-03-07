@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Server to notify GitHub Webhook to L<App::Ikachan>",
    "author" : [
       "moznion <moznion@gmail.com>"
    ],
@@ -53,5 +53,16 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/moznion/App-GitHubWebHook2Ikachan/issues"
+      },
+      "homepage" : "https://github.com/moznion/App-GitHubWebHook2Ikachan",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/moznion/App-GitHubWebHook2Ikachan.git",
+         "web" : "https://github.com/moznion/App-GitHubWebHook2Ikachan"
+      }
+   },
    "version" : "0.01"
 }
