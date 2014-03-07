@@ -34,45 +34,63 @@ sub to_app {
 
             my $branch = _extract_branch_name($dat);
 
-            # for merge commit
-            # TODO squash!
-            my $merge_commit;
-            my $head_commit = $dat->{head_commit};
-            if ($head_commit) {
-                my $head_commit_msg = $head_commit->{message};
-                if ($head_commit_msg && $head_commit_msg =~ /\AMerge (?:pull request|branch)/) {
-                    $merge_commit = [$head_commit];
-                }
+            my $event = $req->header('X-GitHub-Event');
+
+            if ($event eq 'issues') {
+                my $issue = $dat->{issue};
+
+                my $msg  = $issue->{body};
+                my $name = $issue->{user}->{login};
+                my $url  = $issue->{html_url};
+
+                # TODO switch by action
+                # $action = $dat->{action};
+
+                send_to_ikachan($channel, $msg, $name, $url, '');
             }
+            elsif ($event eq 'pull_request') {
+                my $pull_request = $dat->{pull_request};
 
-            # commits
-            for my $commit (@{$merge_commit || $dat->{commits} || []}) {
-                my $name = $commit->{author}->{username}
-                    || $commit->{author}->{name}
-                    || $commit->{committer}->{username}
-                    || $commit->{committer}->{name};
-                my $msg = $commit->{message};
-                my $url = $commit->{url};
+                my $msg  = $pull_request->{body};
+                my $name = $pull_request->{user}->{login};
+                my $url  = $pull_request->{html_url};
 
-                send_to_ikachan($channel, $msg, $name, $url, $branch);
+                # TODO switch by action
+                # $action = $dat->{action};
+
+                send_to_ikachan($channel, $msg, $name, $url, '');
             }
+            elsif ($event eq 'issue_comment') {
+                my $comment = $dat->{issue_comment};
 
-            if (my $comment = $dat->{comment}) {
-                # issue comment
-                # action: created
                 my $msg  = $comment->{body};
                 my $name = $comment->{user}->{login};
                 my $url  = $comment->{html_url};
 
                 send_to_ikachan($channel, $msg, $name, $url, '');
-            } elsif (my $issue = $dat->{issue} and !$dat->{comment}) {
-                # issue
-                # action: opened
-                my $msg  = $issue->{body};
-                my $name = $issue->{user}->{login};
-                my $url  = $issue->{html_url};
+            }
+            elsif ($event eq 'push') {
+                # for merge commit (squash it)
+                my $merge_commit;
+                my $head_commit = $dat->{head_commit};
+                if ($head_commit) {
+                    my $head_commit_msg = $head_commit->{message};
+                    if ($head_commit_msg && $head_commit_msg =~ /\AMerge/) { # XXX
+                        $merge_commit = [$head_commit];
+                    }
+                }
 
-                send_to_ikachan($channel, $msg, $name, $url, '');
+                # commits
+                for my $commit (@{$merge_commit || $dat->{commits} || []}) {
+                    my $name = $commit->{author}->{username}
+                        || $commit->{author}->{name}
+                        || $commit->{committer}->{username}
+                        || $commit->{committer}->{name};
+                    my $msg = $commit->{message};
+                    my $url = $commit->{url};
+
+                    send_to_ikachan($channel, $msg, $name, $url, $branch);
+                }
             }
 
             return [200, ['Content-Type' => 'text/plain', 'Content-Length' => 2], ['OK']];
