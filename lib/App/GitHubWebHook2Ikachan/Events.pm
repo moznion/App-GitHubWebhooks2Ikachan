@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use Class::Accessor::Lite(
     new => 1,
-    ro  => [qw/dat req channel/],
+    ro  => [qw/dat req/],
 );
 
 sub dispatch {

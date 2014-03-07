@@ -2,6 +2,7 @@ package App::GitHubWebHook2Ikachan;
 use 5.008005;
 use strict;
 use warnings;
+use Encode qw/encode_utf8/;
 use Getopt::Long;
 use JSON;
 use Log::Minimal;
@@ -49,7 +50,6 @@ sub to_app {
             unless ($channel) {
                 die "Missing channel name";
             }
-            infof("Post to %s", $channel);
 
             my $payload = $req->param('payload');
             unless ($payload) {
@@ -63,16 +63,15 @@ sub to_app {
             my $event_dispatcher = App::GitHubWebHook2Ikachan::Events->new(
                 dat     => $dat,
                 req     => $req,
-                channel => $channel,
             );
 
-            my $send_contents = $event_dispatcher->dispatch($event_name);
-            if ($send_contents && ref $send_contents eq 'ARRAY') {
-                if (ref $send_contents->[0] ne 'ARRAY') {
-                    $send_contents = [$send_contents];
+            my $send_texts = $event_dispatcher->dispatch($event_name);
+            if ($send_texts)
+                if (ref $send_texts ne 'ARRAY') {
+                    $send_texts = [$send_texts];
                 }
-                for my $send_content (@$send_contents) {
-                    $self->send_to_ikachan(@$send_content);
+                for my $send_text (@$send_texts) {
+                    $self->send_to_ikachan($channel, $send_text);
                 }
             }
 
@@ -82,23 +81,15 @@ sub to_app {
 }
 
 sub send_to_ikachan {
-    my ($self, $channel, $msg, $name, $url, $branch) = @_;
+    my ($self, $channel, $text) = @_;
 
-    $msg =~ s/\r?\n.*//g;
+    my $res = $ua->post($self->ikachan_url, [
+        message => $text,
+        channel => $channel,
+    ]);
 
-    my $green_message = "${msg} (\@${name})";
-    if ($branch) {
-        $green_message = "[$branch] $green_message";
-    }
-
-    my $text = String::IRC->new($green_message)->green . " ${url}";
-    # my $res = $ua->post($IKACHAN_URL, [
-    #     message => $text,
-    #     channel => $channel,
-    # ]);
-
-    # TODO encode
-    infof("POST %s, %s, %s, %s, %s", $channel, $msg, $name, $url, $branch || '-');
+    $text = encode_utf8($text);
+    infof("POST %s", $text);
 }
 
 sub parse_options {

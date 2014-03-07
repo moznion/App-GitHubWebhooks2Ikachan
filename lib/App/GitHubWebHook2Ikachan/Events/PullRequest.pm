@@ -2,28 +2,27 @@ package App::GitHubWebHook2Ikachan::Events::PullRequest;
 use strict;
 use warnings;
 use utf8;
+use String::IRC;
 
 sub call {
     my ($class, $context) = @_;
 
     my $pull_request = $context->dat->{pull_request};
-    my $channel      = $context->channel;
 
-    my $msg  = $pull_request->{body};
-    my $name = $pull_request->{user}->{login};
-    my $url  = $pull_request->{html_url};
+    my $pull_request_title = $pull_request->{title};
+    my $user_name = $pull_request->{user}->{login};
+    my $url = $pull_request->{html_url};
 
-    my $subscribe_actions = $context->req->param('pull_request');
-
-    # Allow all actions
-    if (!$subscribe_actions) {
-        return [$channel, $msg, $name, $url, ''];
-    }
-
-    # Filter by specified actions
     my $action = $context->dat->{action};
-    if (grep { $_ eq $action } split(/,/, $subscribe_actions)) {
-        return [$channel, $msg, $name, $url, ''];
+    my $subscribe_actions = $context->req->param('pull_request');
+    if (
+        !$subscribe_actions || # Allow all actions
+        grep { $_ eq $action } split(/,/, $subscribe_actions) # Filter by specified actions
+    ) {
+        my $main_text = "[pull request $action] $pull_request_title ($user_name)";
+        my $appendix  = $url;
+
+        return String::IRC->new($main_text)->green . " $appendix";
     }
 
     return; # Not match any actions

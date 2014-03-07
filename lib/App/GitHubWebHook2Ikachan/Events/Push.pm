@@ -2,6 +2,7 @@ package App::GitHubWebHook2Ikachan::Events::Push;
 use strict;
 use warnings;
 use utf8;
+use String::IRC;
 
 sub call {
     my ($class, $context) = @_;
@@ -19,19 +20,22 @@ sub call {
         }
     }
 
-    my $contents = [];
+    my $texts = [];
     for my $commit (@{$merge_commit || $dat->{commits} || []}) {
-        my $name =    $commit->{author}->{username}
-                   || $commit->{author}->{name}
-                   || $commit->{committer}->{username}
-                   || $commit->{committer}->{name};
-        my $msg = $commit->{message};
+        my $user_name =    $commit->{author}->{username}
+                        || $commit->{author}->{name}
+                        || $commit->{committer}->{username}
+                        || $commit->{committer}->{name};
+        (my $commit_message = $commit->{message}) =~ s/\r?\n.*//g;
         my $url = $commit->{url};
 
-        push @$contents, [$context->channel, $msg, $name, $url, $branch];
+        my $main_text = "[push to $branch] $commit_message ($user_name)";
+        my $appendix  = $url;
+
+        push @$texts, String::IRC->new($main_text)->green . " $appendix";
     }
 
-    return $contents;
+    return $texts;
 }
 
 sub _extract_branch_name {
