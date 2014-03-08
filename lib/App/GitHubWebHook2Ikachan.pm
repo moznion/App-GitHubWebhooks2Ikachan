@@ -10,7 +10,6 @@ use LWP::UserAgent;
 use Plack::Builder;
 use Plack::Runner;
 use Plack::Request;
-use String::IRC;
 use Pod::Usage;
 use App::GitHubWebHook2Ikachan::Events;
 use Class::Accessor::Lite(
@@ -45,39 +44,45 @@ sub to_app {
             my $env = shift;
             my $req = Plack::Request->new($env);
 
-            my $channel = $req->path_info;
-            $channel =~ s!\A/+!!;
-            unless ($channel) {
-                die "Missing channel name";
-            }
-
-            my $payload = $req->param('payload');
-            unless ($payload) {
-                die "Payload is nothing";
-            }
-            my $dat = decode_json($payload);
-            # infof("Payload: %s", $payload);
-
-            my $event_name = $req->header('X-GitHub-Event');
-
-            my $event_dispatcher = App::GitHubWebHook2Ikachan::Events->new(
-                dat     => $dat,
-                req     => $req,
-            );
-
-            my $send_texts = $event_dispatcher->dispatch($event_name);
-            if ($send_texts) {
-                if (ref $send_texts ne 'ARRAY') {
-                    $send_texts = [$send_texts];
-                }
-                for my $send_text (@$send_texts) {
-                    $self->send_to_ikachan($channel, $send_text);
-                }
-            }
+            $self->respond_to_ikachan($req);
 
             return [200, ['Content-Type' => 'text/plain', 'Content-Length' => 2], ['OK']];
         };
     };
+}
+
+sub respond_to_ikachan {
+    my ($self, $req) = @_;
+
+    my $channel = $req->path_info;
+    $channel =~ s!\A/+!!;
+    unless ($channel) {
+        die "Missing channel name";
+    }
+
+    my $payload = $req->param('payload');
+    unless ($payload) {
+        die "Payload is nothing";
+    }
+    my $dat = decode_json($payload);
+    # infof("Payload: %s", $payload);
+
+    my $event_name = $req->header('X-GitHub-Event');
+
+    my $event_dispatcher = App::GitHubWebHook2Ikachan::Events->new(
+        dat => $dat,
+        req => $req,
+    );
+
+    my $send_texts = $event_dispatcher->dispatch($event_name);
+    if ($send_texts) {
+        if (ref $send_texts ne 'ARRAY') {
+            $send_texts = [$send_texts];
+        }
+        for my $send_text (@$send_texts) {
+            $self->send_to_ikachan($channel, $send_text);
+        }
+    }
 }
 
 sub send_to_ikachan {

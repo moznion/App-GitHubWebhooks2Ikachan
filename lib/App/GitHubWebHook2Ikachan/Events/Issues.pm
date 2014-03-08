@@ -7,7 +7,7 @@ use String::IRC;
 sub call {
     my ($class, $context) = @_;
 
-    my $issue   = $context->dat->{issue};
+    my $issue = $context->dat->{issue};
 
     my $issue_title = $issue->{title};
     my $user_name   = $issue->{user}->{login};
