@@ -16,7 +16,7 @@ sub call {
     my $issue = $context->dat->{issue};
     my $issue_number = $issue->{number};
 
-    my $main_text = "[comment (#$issue_number)] $comment_body ($user_name)";
+    my $main_text = "[comment (#$issue_number)] $comment_body (\@$user_name)";
     my $appendix  = $url;
     return String::IRC->new($main_text)->green . " $appendix";
 }

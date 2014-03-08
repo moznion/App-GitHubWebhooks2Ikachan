@@ -19,7 +19,7 @@ sub call {
         !$subscribe_actions # Allow all actions
         || grep { $_ eq $action } split(/,/, $subscribe_actions) # Filter by specified actions
     ) {
-        my $main_text = "[issue $action] $issue_title ($user_name)";
+        my $main_text = "[issue $action] $issue_title (\@$user_name)";
         my $appendix  = $url;
 
         return String::IRC->new($main_text)->green . " $appendix";
