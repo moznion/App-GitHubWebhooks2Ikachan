@@ -72,7 +72,7 @@ subtest 'issue reopened' => sub {
     like $got, qr!\[INFO\] POST foo, \00303\[issue reopened\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
 };
 
-subtest 'subscribe all' => sub {
+subtest 'subscribe all actions' => sub {
     open my $fh, '<', catfile($FindBin::Bin, 'resources', 'issues', 'opened.json');
     my $payload = do { local $/; <$fh>; };
 
