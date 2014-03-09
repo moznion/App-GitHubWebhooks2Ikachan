@@ -4,9 +4,7 @@ requires 'Getopt::Long';
 requires 'JSON';
 requires 'LWP::UserAgent';
 requires 'Log::Minimal';
-requires 'Plack::Builder';
-requires 'Plack::Request';
-requires 'Plack::Runner';
+requires 'Plack';
 requires 'Pod::Usage';
 requires 'String::IRC';
 requires 'perl', '5.008001';
@@ -18,6 +16,8 @@ on configure => sub {
 };
 
 on test => sub {
+    requires 'Capture::Tiny';
+    requires 'Hash::MultiValue';
     requires 'Test::More', '0.98';
 };
 
