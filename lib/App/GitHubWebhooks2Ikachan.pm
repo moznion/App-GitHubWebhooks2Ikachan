@@ -125,6 +125,8 @@ __END__
 
 =encoding utf-8
 
+=for stopwords webhooks
+
 =head1 NAME
 
 App::GitHubWebhooks2Ikachan - Web server to notify GitHub Webhooks to L<App::Ikachan>
