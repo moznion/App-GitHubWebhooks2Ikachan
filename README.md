@@ -44,7 +44,7 @@ This section describes the details.
     - pull\_request
 
         Action names to subscribe for `pull_request` event. Specify by comma separated value.
-        Now this application supports `opened`, `closed`, `reopend`, and `synchronized`.
+        Now this application supports `opened`, `closed`, `reopend`, and `synchronize`.
 
         If you omit this parameter, it will subscribe the all of supported actions of `pull_request`.
 
