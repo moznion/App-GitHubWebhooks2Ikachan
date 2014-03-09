@@ -127,7 +127,7 @@ __END__
 
 =head1 NAME
 
-App::GitHubWebHook2Ikachan - Server to notify GitHub Webhook to L<App::Ikachan>
+App::GitHubWebHook2Ikachan - Web server to notify GitHub Webhook to L<App::Ikachan>
 
 =head1 SYNOPSIS
 
