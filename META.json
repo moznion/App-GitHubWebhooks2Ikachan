@@ -1,5 +1,5 @@
 {
-   "abstract" : "Server to notify GitHub Webhook to L<App::Ikachan>",
+   "abstract" : "Web server to notify GitHub Webhooks to L<App::Ikachan>",
    "author" : [
       "moznion <moznion@gmail.com>"
    ],
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "App-GitHubWebHook2Ikachan",
+   "name" : "App-GitHubWebhooks2Ikachan",
    "no_index" : {
       "directory" : [
          "t",
@@ -67,13 +67,13 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/moznion/App-GitHubWebHook2Ikachan/issues"
+         "web" : "https://github.com/moznion/App-GitHubWebhooks2Ikachan/issues"
       },
-      "homepage" : "https://github.com/moznion/App-GitHubWebHook2Ikachan",
+      "homepage" : "https://github.com/moznion/App-GitHubWebhooks2Ikachan",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/moznion/App-GitHubWebHook2Ikachan.git",
-         "web" : "https://github.com/moznion/App-GitHubWebHook2Ikachan"
+         "url" : "git://github.com/moznion/App-GitHubWebhooks2Ikachan.git",
+         "web" : "https://github.com/moznion/App-GitHubWebhooks2Ikachan"
       }
    },
    "version" : "0.01"

@@ -1,4 +1,4 @@
-package App::GitHubWebHook2Ikachan::Events;
+package App::GitHubWebhooks2Ikachan::Events;
 use strict;
 use warnings;
 use utf8;

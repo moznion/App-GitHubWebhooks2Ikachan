@@ -1,4 +1,4 @@
-package App::GitHubWebHook2Ikachan::Events::IssueComment;
+package App::GitHubWebhooks2Ikachan::Events::IssueComment;
 use strict;
 use warnings;
 use utf8;

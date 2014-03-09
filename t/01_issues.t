@@ -9,11 +9,11 @@ use FindBin;
 use Hash::MultiValue;
 use Plack::Request;
 
-use App::GitHubWebHook2Ikachan;
+use App::GitHubWebhooks2Ikachan;
 
 use Test::More;
 
-my $g2i = App::GitHubWebHook2Ikachan->new({
+my $g2i = App::GitHubWebhooks2Ikachan->new({
     ikachan_url => 'http://example.com',
 });
 my $channel = 'foo';

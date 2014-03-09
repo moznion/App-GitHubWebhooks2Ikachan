@@ -1,4 +1,4 @@
-package App::GitHubWebHook2Ikachan;
+package App::GitHubWebhooks2Ikachan;
 use 5.008005;
 use strict;
 use warnings;
@@ -11,7 +11,7 @@ use Plack::Builder;
 use Plack::Runner;
 use Plack::Request;
 use Pod::Usage;
-use App::GitHubWebHook2Ikachan::Events;
+use App::GitHubWebhooks2Ikachan::Events;
 use Class::Accessor::Lite(
     new => '0',
     rw  => [qw/ua ikachan_url/],
@@ -23,7 +23,7 @@ sub new {
     my ($class, $args) = @_;
 
     my $ua = LWP::UserAgent->new(
-        agent => "App::GitHubWebHook2Ikachan (Perl)",
+        agent => "App::GitHubWebhooks2Ikachan (Perl)",
     );
 
     bless {
@@ -69,7 +69,7 @@ sub respond_to_ikachan {
 
     my $event_name = $req->header('X-GitHub-Event');
 
-    my $event_dispatcher = App::GitHubWebHook2Ikachan::Events->new(
+    my $event_dispatcher = App::GitHubWebhooks2Ikachan::Events->new(
         dat => $dat,
         req => $req,
     );
@@ -127,15 +127,15 @@ __END__
 
 =head1 NAME
 
-App::GitHubWebHook2Ikachan - Web server to notify GitHub Webhook to L<App::Ikachan>
+App::GitHubWebhooks2Ikachan - Web server to notify GitHub Webhooks to L<App::Ikachan>
 
 =head1 SYNOPSIS
 
-    $ githubwebhook2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
+    $ githubwebhooks2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
 
 =head1 DESCRIPTION
 
-App::GitHubWebHook2Ikachan is the server to notify GitHub Webhook to L<App::Ikachan>.
+App::GitHubWebhooks2Ikachan is the server to notify GitHub Webhooks to L<App::Ikachan>.
 
 Now, this application supports C<issues>, C<pull_request>, C<issue_comment>, and C<push> webhooks of GitHub.
 
@@ -145,7 +145,7 @@ Please set up webhooks at GitHub (if you want to know details, please refer L<ht
 
 Payload URL will be like so;
 
-    http://your-githubwebhook2ikachan-server.com/${path}?subscribe=issues,pull_request&issues=opened,closed&pull_request=opened
+    http://your-githubwebhooks2ikachan-server.com/${path}?subscribe=issues,pull_request&issues=opened,closed&pull_request=opened
 
 This section describes the details.
 

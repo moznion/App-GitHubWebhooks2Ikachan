@@ -3,10 +3,10 @@
 use strict;
 use warnings;
 use utf8;
-use App::GitHubWebHook2Ikachan;
+use App::GitHubWebhooks2Ikachan;
 
-my ($opt, $argv) = App::GitHubWebHook2Ikachan->parse_options(@ARGV);
-my $g2i = App::GitHubWebHook2Ikachan->new($opt);
+my ($opt, $argv) = App::GitHubWebhooks2Ikachan->parse_options(@ARGV);
+my $g2i = App::GitHubWebhooks2Ikachan->new($opt);
 $g2i->run(@$argv);
 
 __END__
@@ -15,17 +15,17 @@ __END__
 
 =head1 NAME
 
-githubwebhook2ikachan - Starter script for L<App::GitHubWebHook2Ikachan>
+githubwebhooks2ikachan - Starter script for L<App::GitHubWebhooks2Ikachan>
 
 =head1 SYNOPSIS
 
-    $ githubwebhook2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
+    $ githubwebhooks2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
 
 This script uses port 5555 as default.
 
 =head1 DESCRIPTION
 
-This script is the starter for L<App::GitHubWebHook2Ikachan>.
+This script is the starter for L<App::GitHubWebhooks2Ikachan>.
 
 =head1 LICENSE
 

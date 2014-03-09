@@ -1,4 +1,4 @@
-package App::GitHubWebHook2Ikachan::Events::PullRequest;
+package App::GitHubWebhooks2Ikachan::Events::PullRequest;
 use strict;
 use warnings;
 use utf8;

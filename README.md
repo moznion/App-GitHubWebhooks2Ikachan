@@ -1,15 +1,15 @@
-[![Build Status](https://travis-ci.org/moznion/App-GitHubWebHook2Ikachan.png?branch=master)](https://travis-ci.org/moznion/App-GitHubWebHook2Ikachan)
+[![Build Status](https://travis-ci.org/moznion/App-GitHubWebhooks2Ikachan.png?branch=master)](https://travis-ci.org/moznion/App-GitHubWebhooks2Ikachan)
 # NAME
 
-App::GitHubWebHook2Ikachan - Server to notify GitHub Webhook to [App::Ikachan](https://metacpan.org/pod/App::Ikachan)
+App::GitHubWebhooks2Ikachan - Web server to notify GitHub Webhooks to [App::Ikachan](https://metacpan.org/pod/App::Ikachan)
 
 # SYNOPSIS
 
-    $ githubwebhook2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
+    $ githubwebhooks2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
 
 # DESCRIPTION
 
-App::GitHubWebHook2Ikachan is the server to notify GitHub Webhook to [App::Ikachan](https://metacpan.org/pod/App::Ikachan).
+App::GitHubWebhooks2Ikachan is the server to notify GitHub Webhooks to [App::Ikachan](https://metacpan.org/pod/App::Ikachan).
 
 Now, this application supports `issues`, `pull_request`, `issue_comment`, and `push` webhooks of GitHub.
 
@@ -19,7 +19,7 @@ Please set up webhooks at GitHub (if you want to know details, please refer [htt
 
 Payload URL will be like so;
 
-    http://your-githubwebhook2ikachan-server.com/${path}?subscribe=issues,pull_request&issues=opened,closed&pull_request=opened
+    http://your-githubwebhooks2ikachan-server.com/${path}?subscribe=issues,pull_request&issues=opened,closed&pull_request=opened
 
 This section describes the details.
 
