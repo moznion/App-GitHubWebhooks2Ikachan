@@ -182,7 +182,7 @@ If you omit this parameter, it will subscribe the all of supported actions of C<
 =item pull_request
 
 Action names to subscribe for C<pull_request> event. Specify by comma separated value.
-Now this application supports C<opened>, C<closed>, C<reopend>, and C<synchronized>.
+Now this application supports C<opened>, C<closed>, C<reopend>, and C<synchronize>.
 
 If you omit this parameter, it will subscribe the all of supported actions of C<pull_request>.
 
