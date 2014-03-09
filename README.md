@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/moznion/App-GitHubWebHook2Ikachan.png?branch=master)](https://travis-ci.org/moznion/App-GitHubWebHook2Ikachan)
 # NAME
 
 App::GitHubWebHook2Ikachan - Server to notify GitHub Webhook to [App::Ikachan](https://metacpan.org/pod/App::Ikachan)
