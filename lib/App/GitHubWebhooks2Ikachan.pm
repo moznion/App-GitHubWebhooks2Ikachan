@@ -55,9 +55,14 @@ sub respond_to_ikachan {
     my ($self, $req) = @_;
 
     my $channel = $req->path_info;
-    $channel =~ s!\A/+!!;
     unless ($channel) {
         die "Missing channel name";
+    }
+    $channel =~ s!\A/+!!;
+
+    # complement leading sharp for channel name
+    if ($channel !~ /\A\%23/) {
+        $channel = '%23' . $channel;
     }
 
     my $payload = $req->param('payload');
