@@ -32,7 +32,7 @@ subtest 'comment created' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!POST $channel, \00303\[comment \(#13\)\] foobar \(\@moznion\)\17 https://github\.com/moznion/sandbox/issues/13#issuecomment-37093289!;
+    like $got, qr!POST #$channel, \00303\[comment \(#13\)\] foobar \(\@moznion\)\17 https://github\.com/moznion/sandbox/issues/13#issuecomment-37093289!;
 };
 
 done_testing;

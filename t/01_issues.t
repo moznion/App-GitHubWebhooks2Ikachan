@@ -33,7 +33,7 @@ subtest 'issue opened' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[issue opened\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[issue opened\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
 };
 
 subtest 'issue closed' => sub {
@@ -51,7 +51,7 @@ subtest 'issue closed' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[issue closed\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[issue closed\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
 };
 
 subtest 'issue reopened' => sub {
@@ -69,7 +69,7 @@ subtest 'issue reopened' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[issue reopened\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[issue reopened\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
 };
 
 subtest 'subscribe all actions' => sub {
@@ -86,7 +86,7 @@ subtest 'subscribe all actions' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[issue opened\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[issue opened\] This is new issue \(\@moznion\)\17 https://github.com/moznion/sandbox/issues/13!;
 };
 
 subtest 'not subscribe action' => sub {

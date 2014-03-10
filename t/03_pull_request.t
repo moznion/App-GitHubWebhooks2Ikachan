@@ -33,7 +33,7 @@ subtest 'pull request opened' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[pull request opened\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[pull request opened\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
 };
 
 subtest 'pull request closed' => sub {
@@ -51,7 +51,7 @@ subtest 'pull request closed' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[pull request closed\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[pull request closed\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
 };
 
 subtest 'issue reopened' => sub {
@@ -69,7 +69,7 @@ subtest 'issue reopened' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[pull request reopened\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[pull request reopened\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
 };
 
 subtest 'issue synchronize' => sub {
@@ -87,7 +87,7 @@ subtest 'issue synchronize' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[pull request synchronize\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[pull request synchronize\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
 };
 
 subtest 'subscribe all actions' => sub {
@@ -103,7 +103,7 @@ subtest 'subscribe all actions' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!\[INFO\] POST $channel, \00303\[pull request opened\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
+    like $got, qr!\[INFO\] POST #$channel, \00303\[pull request opened\] New Pull Request \(\@moznion\)\17 https://github.com/moznion/sandbox/pull/15!;
 };
 
 subtest 'not subscribe action' => sub {

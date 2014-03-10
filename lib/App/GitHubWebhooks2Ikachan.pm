@@ -99,6 +99,8 @@ sub send_to_ikachan {
     ]);
 
     $text = encode_utf8($text);
+
+    $channel =~ s/\A\%23/#/;
     infof("POST %s, %s", $channel, $text);
 }
 
