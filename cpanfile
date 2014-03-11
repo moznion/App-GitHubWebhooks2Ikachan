@@ -1,6 +1,6 @@
 requires 'Class::Accessor::Lite';
 requires 'Encode';
-requires 'Getopt::Long';
+requires 'Getopt::Long', '2.42';
 requires 'JSON';
 requires 'LWP::UserAgent';
 requires 'Log::Minimal';
