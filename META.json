@@ -46,7 +46,7 @@
          "requires" : {
             "Class::Accessor::Lite" : "0",
             "Encode" : "0",
-            "Getopt::Long" : "0",
+            "Getopt::Long" : "2.42",
             "JSON" : "0",
             "LWP::UserAgent" : "0",
             "Log::Minimal" : "0",
@@ -76,5 +76,5 @@
          "web" : "https://github.com/moznion/App-GitHubWebhooks2Ikachan"
       }
    },
-   "version" : "0.02"
+   "version" : "0.03"
 }

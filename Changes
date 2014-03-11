@@ -2,6 +2,10 @@ Revision history for Perl extension App-GitHubWebhooks2Ikachan
 
 {{$NEXT}}
 
+0.03 2014-03-11T04:21:08Z
+
+    - Up version of dependent module (Getopt::Long)
+
 0.02 2014-03-10T03:02:39Z
 
     - Complement leading sharp in path info for channel name

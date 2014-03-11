@@ -17,7 +17,7 @@ use Class::Accessor::Lite(
     rw  => [qw/ua ikachan_url/],
 );
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 sub new {
     my ($class, $args) = @_;
