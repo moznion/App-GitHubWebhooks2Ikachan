@@ -60,11 +60,6 @@ sub respond_to_ikachan {
     }
     $channel =~ s!\A/+!!;
 
-    # complement leading sharp for channel name
-    if ($channel !~ /\A\%23/) {
-        $channel = '%23' . $channel;
-    }
-
     my $payload = $req->param('payload');
     unless ($payload) {
         die "Payload is nothing";
