@@ -35,6 +35,7 @@ sub new {
 sub to_app {
     my ($self) = @_;
 
+    infof("App::GitHubWebhooks2Ikachan Version: $VERSION");
     infof("ikachan url: %s", $self->ikachan_url);
 
     builder {
