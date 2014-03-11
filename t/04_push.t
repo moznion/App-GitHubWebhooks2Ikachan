@@ -34,8 +34,8 @@ subtest 'commits' => sub {
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
     my @commits = split /\n/, $got;
 
-    like $commits[0], qr!POST #$channel, \00303\[push to master\] Commit1 \(\@moznion\)\17 https://github\.com/moznion/sandbox/commit/b4da12df1bc19d2b20d7ab8a11fe9a4413ddf509!;
-    like $commits[1], qr!POST #$channel, \00303\[push to master\] Commit2 \(\@moznion\)\17 https://github\.com/moznion/sandbox/commit/e2e64cea713dbfb574f1ace80a4be6c55f98433d!;
+    like $commits[0], qr!POST $channel, \00303\[push to master\] Commit1 \(\@moznion\)\17 https://github\.com/moznion/sandbox/commit/b4da12df1bc19d2b20d7ab8a11fe9a4413ddf509!;
+    like $commits[1], qr!POST $channel, \00303\[push to master\] Commit2 \(\@moznion\)\17 https://github\.com/moznion/sandbox/commit/e2e64cea713dbfb574f1ace80a4be6c55f98433d!;
 };
 
 subtest 'merge commit' => sub {
@@ -52,7 +52,7 @@ subtest 'merge commit' => sub {
     });
 
     my $got = capture_stderr{ $g2i->respond_to_ikachan($req) };
-    like $got, qr!POST #$channel, \00303\[push to master\] Merge pull request #15 from moznion/new_pull_request \(\@moznion\)\17 https://github\.com/moznion/sandbox/commit/d2427a9b4ffbf5277cfe4229f22b0337146b77d3!;
+    like $got, qr!POST $channel, \00303\[push to master\] Merge pull request #15 from moznion/new_pull_request \(\@moznion\)\17 https://github\.com/moznion/sandbox/commit/d2427a9b4ffbf5277cfe4229f22b0337146b77d3!;
 };
 
 done_testing;
