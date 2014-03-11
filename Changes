@@ -2,6 +2,10 @@ Revision history for Perl extension App-GitHubWebhooks2Ikachan
 
 {{$NEXT}}
 
+0.04 2014-03-11T04:39:11Z
+
+    - Change handling of PATH_INFO
+
 0.03 2014-03-11T04:21:08Z
 
     - Up version of dependent module (Getopt::Long)

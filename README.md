@@ -5,7 +5,7 @@ App::GitHubWebhooks2Ikachan - Web server to notify GitHub Webhooks to [App::Ikac
 
 # SYNOPSIS
 
-    $ githubwebhooks2ikachan --ikachan_url=http://your-ikachan-server.com --port=12345
+    $ githubwebhooks2ikachan --ikachan_url=http://your-ikachan-server.com/notice --port=12345
 
 # DESCRIPTION
 
@@ -26,7 +26,8 @@ This section describes the details.
 - PATH INFO
     - ${path}
 
-        Destination of IRC channel to send message. This is essential.
+        Destination of IRC channel or user to send message. This is essential.
+        If you want to send `#foobar` channel, please fill here `%23foobar`.
 - QUERY PARAMETERS
     - subscribe
 
