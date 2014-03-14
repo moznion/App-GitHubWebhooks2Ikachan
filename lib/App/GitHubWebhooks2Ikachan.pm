@@ -45,9 +45,7 @@ sub to_app {
             my $env = shift;
             my $req = Plack::Request->new($env);
 
-            $self->respond_to_ikachan($req);
-
-            return [200, ['Content-Type' => 'text/plain', 'Content-Length' => 2], ['OK']];
+            return $self->respond_to_ikachan($req);
         };
     };
 }
@@ -55,15 +53,14 @@ sub to_app {
 sub respond_to_ikachan {
     my ($self, $req) = @_;
 
-    my $channel = $req->path_info;
-    unless ($channel) {
-        die "Missing channel name";
+    (my $channel = $req->path_info) =~ s!\A/+!!;
+    if (!$channel) {
+        return [400, ['Content-Type' => 'text/plain', 'Content-Length' => 20], ['Missing channel name']];
     }
-    $channel =~ s!\A/+!!;
 
     my $payload = $req->param('payload');
     unless ($payload) {
-        die "Payload is nothing";
+        return [400, ['Content-Type' => 'text/plain', 'Content-Length' => 18], ['Payload is nothing']];
     }
     my $dat = decode_json($payload);
     # infof("Payload: %s", $payload);
@@ -84,6 +81,8 @@ sub respond_to_ikachan {
             $self->send_to_ikachan($channel, $send_text);
         }
     }
+
+    return [200, ['Content-Type' => 'text/plain', 'Content-Length' => 2], ['OK']];
 }
 
 sub send_to_ikachan {
