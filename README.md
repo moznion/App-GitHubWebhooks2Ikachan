@@ -13,6 +13,10 @@ App::GitHubWebhooks2Ikachan is the server to notify GitHub Webhooks to [App::Ika
 
 Now, this application supports `issues`, `pull_request`, `issue_comment`, and `push` webhooks of GitHub.
 
+# PARAMETERS
+
+Please refer to the [githubwebhooks2ikachan](https://metacpan.org/pod/githubwebhooks2ikachan).
+
 # USAGE
 
 Please set up webhooks at GitHub (if you want to know details, please refer [http://developer.github.com/v3/activity/events/types/](http://developer.github.com/v3/activity/events/types/)).
@@ -51,6 +55,8 @@ This section describes the details.
         If you omit this parameter, it will subscribe the all of supported actions of `pull_request`.
 
 # SEE ALSO
+
+[githubwebhooks2ikachan](https://metacpan.org/pod/githubwebhooks2ikachan)
 
 [http://developer.github.com/v3/activity/events/types/](http://developer.github.com/v3/activity/events/types/).
 

@@ -2,6 +2,11 @@ Revision history for Perl extension App-GitHubWebhooks2Ikachan
 
 {{$NEXT}}
 
+0.05 2014-03-14T08:33:30Z
+
+    - Suppress stack trace on accident
+    - Support debug mode
+
 0.04 2014-03-11T04:39:11Z
 
     - Change handling of PATH_INFO
