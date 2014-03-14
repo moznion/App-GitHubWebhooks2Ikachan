@@ -29,13 +29,18 @@ sub new {
     bless {
         ua          => $ua,
         ikachan_url => $args->{ikachan_url},
+        debug       => $args->{debug},
     }, $class;
 }
 
 sub to_app {
     my ($self) = @_;
 
-    infof("App::GitHubWebhooks2Ikachan Version: $VERSION");
+    if ($self->{debug}) {
+        infof("*** RUNNING IN DEBUG MODE ***");
+    }
+
+    infof("App::GitHubWebhooks2Ikachan Version: %.2f", $VERSION);
     infof("ikachan url: %s", $self->ikachan_url);
 
     builder {
@@ -63,7 +68,10 @@ sub respond_to_ikachan {
         return [400, ['Content-Type' => 'text/plain', 'Content-Length' => 18], ['Payload is nothing']];
     }
     my $dat = decode_json($payload);
-    # infof("Payload: %s", $payload);
+
+    if ($self->{debug}) {
+        infof("Payload: %s", $payload);
+    }
 
     my $event_name = $req->header('X-GitHub-Event');
 
@@ -108,6 +116,7 @@ sub parse_options {
 
     $p->getoptionsfromarray(\@argv, \my %opt, qw/
         ikachan_url=s
+        debug
     /) or pod2usage();
     $opt{ikachan_url} || pod2usage();
 
