@@ -152,6 +152,10 @@ App::GitHubWebhooks2Ikachan is the server to notify GitHub Webhooks to L<App::Ik
 
 Now, this application supports C<issues>, C<pull_request>, C<issue_comment>, and C<push> webhooks of GitHub.
 
+=head1 PARAMETERS
+
+Please refer to the L<githubwebhooks2ikachan>.
+
 =head1 USAGE
 
 Please set up webhooks at GitHub (if you want to know details, please refer L<http://developer.github.com/v3/activity/events/types/>).
@@ -205,6 +209,8 @@ If you omit this parameter, it will subscribe the all of supported actions of C<
 =back
 
 =head1 SEE ALSO
+
+L<githubwebhooks2ikachan>
 
 L<http://developer.github.com/v3/activity/events/types/>.
 
