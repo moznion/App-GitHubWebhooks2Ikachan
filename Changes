@@ -2,6 +2,10 @@ Revision history for Perl extension App-GitHubWebhooks2Ikachan
 
 {{$NEXT}}
 
+0.06 2014-04-01T03:39:10Z
+
+    - Improve function to squash duplicated commits
+
 0.05 2014-03-14T08:33:30Z
 
     - Suppress stack trace on accident
