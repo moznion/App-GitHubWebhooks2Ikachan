@@ -10,18 +10,10 @@ sub call {
     my $dat    = $context->dat;
     my $branch = __PACKAGE__->_extract_branch_name($dat);
 
-    # for merge commit (squash it)
-    my $merge_commit;
-    my $head_commit = $dat->{head_commit};
-    if ($head_commit) {
-        my $head_commit_msg = $head_commit->{message};
-        if ($head_commit_msg && $head_commit_msg =~ /\AMerge/) { # XXX
-            $merge_commit = [$head_commit];
-        }
-    }
-
     my $texts = [];
-    for my $commit (@{$merge_commit || $dat->{commits} || []}) {
+    for my $commit (@{$dat->{commits} || []}) {
+        next if $commit->{distinct} == 0; # to squash duplicated commit
+
         my $user_name =    $commit->{author}->{username}
                         || $commit->{author}->{name}
                         || $commit->{committer}->{username}
