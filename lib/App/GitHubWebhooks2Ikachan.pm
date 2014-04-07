@@ -150,7 +150,7 @@ App::GitHubWebhooks2Ikachan - Web server to notify GitHub Webhooks to L<App::Ika
 
 App::GitHubWebhooks2Ikachan is the server to notify GitHub Webhooks to L<App::Ikachan>.
 
-Now, this application supports C<issues>, C<pull_request>, C<issue_comment>, and C<push> webhooks of GitHub.
+Now, this application supports C<issues>, C<pull_request>, C<issue_comment>, C<commit_comment>, C<pull_request_review_comment> and C<push> webhooks of GitHub.
 
 =head1 PARAMETERS
 
