@@ -2,6 +2,10 @@ Revision history for Perl extension App-GitHubWebhooks2Ikachan
 
 {{$NEXT}}
 
+0.10 2014-04-07T02:29:11Z
+
+    - Support `commit_comment` and `pull_request_review_comment` event
+
 0.06 2014-04-01T03:39:10Z
 
     - Improve function to squash duplicated commits

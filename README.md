@@ -11,7 +11,7 @@ App::GitHubWebhooks2Ikachan - Web server to notify GitHub Webhooks to [App::Ikac
 
 App::GitHubWebhooks2Ikachan is the server to notify GitHub Webhooks to [App::Ikachan](https://metacpan.org/pod/App::Ikachan).
 
-Now, this application supports `issues`, `pull_request`, `issue_comment`, and `push` webhooks of GitHub.
+Now, this application supports `issues`, `pull_request`, `issue_comment`, `commit_comment`, `pull_request_review_comment` and `push` webhooks of GitHub.
 
 # PARAMETERS
 
