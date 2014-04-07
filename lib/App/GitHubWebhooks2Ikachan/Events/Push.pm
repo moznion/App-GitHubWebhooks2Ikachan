@@ -22,9 +22,8 @@ sub call {
         my $url = $commit->{url};
 
         my $main_text = "[push to $branch] $commit_message (\@$user_name)";
-        my $appendix  = $url;
 
-        push @$texts, String::IRC->new($main_text)->green . " $appendix";
+        push @$texts, String::IRC->new($main_text)->green . " $url";
     }
 
     return $texts;
